@@ -1,0 +1,49 @@
+class Solution {
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        // brute force  int row=matrix.length;
+        // int col=matrix[0].length;
+        // int maxval=Integer.MIN_VALUE;
+        // for(int top=0;top<row;top++){
+        //     for(int bottom=top;bottom<row;bottom++){
+        //         for(int left=0;left<col;left++){
+        //             for(int right=left;right<col;right++){
+        //                 int sum=0;
+        //                 for(int i=top;i<=bottom;i++){
+        //                     for(int j=left;j<=right;j++){
+        //                         sum+=matrix[i][j];
+        //                     }
+        //                 }
+        //                 if(sum<=k){
+        //                    maxval=Math.max(maxval,sum);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // return maxval;
+        //optimal using prefix array+treeset(sorting);
+        int row=matrix.length;
+        int col=matrix[0].length;
+        int maxsum=Integer.MIN_VALUE;
+        for(int top=0;top<row;top++){
+            int[] colsum=new int[col];
+            for(int bottom=top;bottom<row;bottom++){
+                for(int c=0;c<col;c++){
+                  colsum[c]+= matrix[bottom][c];
+                }
+            TreeSet<Integer> set=new TreeSet<>();
+            set.add(0);
+            int prefix=0;
+            for(int val:colsum){
+                prefix+=val;
+            Integer x=set.ceiling(prefix-k);
+            if(x!=null){
+                maxsum=Math.max(maxsum,prefix-x);
+            }
+            set.add(prefix);
+            }
+          }
+        }
+        return maxsum;
+    }
+}
