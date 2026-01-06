@@ -1,0 +1,56 @@
+class Solution {
+     // bruteforce-Inserts all n² elements into a heap
+        // Heap size = n²
+        // Removes k−1 elements
+        // Time Complexity
+        // Insert n² elements → O(n² log n²)
+        // Remove k elements → O(k log n²)
+        //overall=0(n2logn2)
+        //sc=O(n2)
+        // PriorityQueue<Integer>pq= new PriorityQueue<>();
+        //     for(int i=0;i<matrix.length;i++){
+        //         for(int j=0;j<matrix[0].length;j++){
+        //             pq.add(matrix[i][j]);
+        //         }
+        //     }
+        // for(int i=0;i<k-1;i++){
+        //     pq.poll();
+        // }
+        // return pq.peek();
+        private int countlessthanequal(int[][] matrix,int mid){
+            int n=matrix.length;
+            int row=n-1;
+            int col=0;
+            int count=0;
+            while(row>=0 && col<n){
+                if(matrix[row][col]<=mid){
+                    count+=row+1;
+                    col++;
+                }
+                else{
+                    row--;
+                }
+            }
+            return count;
+        }
+    // optimal using binarysearch
+        // take small=matrix[0][0];
+        // take large=marix[n-1][n-1];
+        //time complexity:O(n*(log(high-low)))
+        // n for count function
+    public int kthSmallest(int[][] matrix, int k) {
+        int n=matrix.length;
+        int low=matrix[0][0];
+        int high=matrix[n-1][n-1];
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(countlessthanequal(matrix,mid)<k){
+                low=mid+1;
+            }
+            else{
+                high=mid-1;
+            }
+        }
+        return low;
+    }
+}
