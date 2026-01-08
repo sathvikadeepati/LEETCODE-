@@ -1,0 +1,43 @@
+class Solution {
+      //bruteforce -O(n2logn2) sc:O(n2) using two forloops 
+        //priorityQueue-maxheap -O(n2logk) sc:0(k)
+        // PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        // int n=nums.length;
+        // for(int i=0;i<n;i++){
+        //    for(int j=i+1;j<n;j++){
+        //        pq.add(Math.abs(nums[j]-nums[i]));
+        //    }
+        // }
+        // while(pq.size()>k){
+        //     pq.poll();
+        // }
+        // return pq.peek();
+    private int countpairs(int[] nums,int mid){
+        int left=0;
+        int count=0;
+        int n=nums.length;
+        for(int right=0;right<n;right++){
+            while(nums[right]-nums[left]>mid){
+                left++;
+            }
+            count+=right-left;
+        }
+        return count;
+    }
+    public int smallestDistancePair(int[] nums, int k) {
+      Arrays.sort(nums);
+      int low=0;
+      int n=nums.length;
+      int high=nums[n-1]-nums[0];
+    while(low<high){
+        int mid=low+(high-low)/2;
+        if(countpairs(nums,mid)<k){
+            low=mid+1;
+        }
+        else{
+            high=mid;
+        }
+    }
+     return low;
+    }
+}
