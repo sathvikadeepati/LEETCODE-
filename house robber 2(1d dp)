@@ -1,0 +1,74 @@
+class Solution {
+    //recursion solution o(2^n) and space -o(n)
+    // private int solve(int[] nums,int i,int start){
+    //   if(i<start) return 0;
+    //   if(i==start) return nums[start];
+    //   return Math.max(solve(nums,i-1,start),nums[i]+solve(nums,i-2,start));
+    // }
+    // public int rob(int[] nums) {
+    //     int n=nums.length;
+    //     int case1=solve(nums,n-2,0);
+    //     int case2=solve(nums,n-1,1);
+    //     return Math.max(case1,case2);
+    // }
+    //----------- memorization method 
+    // private int solve(int[] nums,int i,int start,int[] dp){
+    //   if(i<start) return 0;
+    //   if(i==start) return nums[start];
+    //   if(dp[i]!=-1) return dp[i];
+    //   return dp[i]=Math.max(solve(nums,i-1,start,dp),nums[i]+solve(nums,i-2,start,dp));
+    // }
+    // public int rob(int[] nums) {
+    //     int n=nums.length;
+    //     if(n==1) return nums[0];
+    //     int[] dp1=new int[n+1];
+    //     int[] dp2=new int[n+1];
+    //     Arrays.fill(dp1,-1);
+    //     Arrays.fill(dp2,-1);
+    //     int case1=solve(nums,n-2,0,dp1);
+    //     int case2=solve(nums,n-1,1,dp2);
+    //     return Math.max(case1,case2);
+    // } 
+    //------------ tabulation
+    private int solve(int[] nums,int start ,int end){
+      int n=nums.length;
+      int [] dp=new int[n+1];
+      dp[start]=nums[start];
+      for(int i=start+1;i<=end;i++){
+        int pick=nums[i]+(i-2>=start?dp[i-2]:0);
+        int notpick=dp[i-1];
+        dp[i]= Math.max(pick,notpick);
+      }
+      return dp[end];
+    }
+    public int rob(int[] nums) {
+        int n=nums.length;
+        if(n==1) return nums[0];
+      
+        int case1=solve(nums,0,n-2);
+        int case2=solve(nums,1,n-1);
+        return Math.max(case1,case2);
+    }
+///---------- space optimization
+  private int solve(int[] nums,int start ,int end){
+      int prev1=nums[start];
+      int prev2=0;
+      for(int i=start+1;i<=end;i++){
+        int pick=nums[i]+prev2;
+        int notpick=prev1;
+        int curr= Math.max(pick,notpick);
+        prev2=prev1;
+        prev1=curr;
+      }
+      return prev1;
+    }
+    public int rob(int[] nums) {
+        int n=nums.length;
+        if(n==1) return nums[0];
+      
+        int case1=solve(nums,0,n-2);
+        int case2=solve(nums,1,n-1);
+        return Math.max(case1,case2);
+    }
+
+}
