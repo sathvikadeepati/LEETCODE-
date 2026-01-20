@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    HashMap<TreeNode,Integer> dp=new HashMap<>();
+  //public int rob(TreeNode root) {
+        // recursion
+        // if(root==null) return 0
+        // int rob=root.val;
+        // if(root.left!=null){
+        //     rob+=rob(root.left.left)+rob(root.left.right);
+        // }
+        // if(root.right!=null){
+        //     rob+=rob(root.right.left)+rob(root.right.right);
+        // }
+        // int notrob=rob(root.left)+rob(root.right);
+        // return Math.max(rob,notrob);
+    //}
+        //---------- memorization
+        //public int rob(TreeNode root) {
+        // if(root==null) return 0;
+        //if(dp.containsKey(root)) return dp.get(root);
+        // int rob=root.val;
+        // if(root.left!=null){
+        //     rob+=rob(root.left.left)+rob(root.left.right);
+        // }
+        // if(root.right!=null){
+        //     rob+=rob(root.right.left)+rob(root.right.right);
+        // }
+        // int notrob=rob(root.left)+rob(root.right);
+        // int res= Math.max(rob,notrob);
+        //dp.put(root,res);
+        //return res;
+    //}
+       //------ tabulation
+       private int[] solve(TreeNode root){
+          if(root==null) return new int[2];
+          int[] leftnodes=solve(root.left);
+          int[] rightnodes=solve(root.right);
+          int[] options=new int[2];
+          options[0]=root.val+leftnodes[1]+rightnodes[1];
+          options[1]=Math.max(leftnodes[0],leftnodes[1])+Math.max(rightnodes[0],rightnodes[1]);
+          return options;
+
+       }
+       public int rob(TreeNode root){
+          int[] res=solve(root);
+          return Math.max(res[0],res[1]);
+       } 
+}
