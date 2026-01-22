@@ -1,0 +1,52 @@
+class Solution {
+    //recurion 
+    // private int solve(int amount,int[]coins,int index){
+    //     if(amount==0) return 1;
+    //     if(amount<1) return 0;
+    //     if(index==coins.length) return 0;
+    //     int take=solve(amount-coins[index],coins,index);
+    //     int nottake=solve(amount,coins,index+1);
+    //     return take+nottake;
+    // }
+    // public int change(int amount, int[] coins) {
+    //       return solve(amount,coins,0);
+    //  }
+    //----memorization
+    private int solve(int amount,int[]coins,int index,int[][]dp){
+        if(amount==0) return 1;
+        if(amount<1) return 0;
+        if(index==coins.length) return 0;
+        if(dp[index][amount]!=-1) return dp[index][amount];
+        int take=solve(amount-coins[index],coins,index,dp);
+        int nottake=solve(amount,coins,index+1,dp);
+        return dp[index][amount]=take+nottake;
+    }
+    public int change(int amount, int[] coins) {
+        int[][]dp=new int[coins.length][amount+1];
+        for(int i=0;i<coins.length;i++){
+            Arrays.fill(dp[i],-1);
+        }
+          return solve(amount,coins,0,dp);
+     }
+
+    //tabulation
+    // public int change(int amount, int[] coins) {
+    //     int n=coins.length;
+    //     int m=amount;
+    //     int [][]dp=new int[n+1][m+1];
+    //     for(int i=0;i<=n;i++){
+    //         dp[i][0]=1;
+    //     }
+    //     for(int i=1;i<=n;i++){
+    //         for(int j=1;j<=m;j++){
+    //             if(j<coins[i-1]){
+    //                 dp[i][j]=dp[i-1][j];
+    //             }
+    //             else{
+    //                dp[i][j]=dp[i-1][j]+dp[i][j-coins[i-1]];
+    //             }
+    //         }
+    //     }
+    //     return dp[n][m];
+    // }
+}
