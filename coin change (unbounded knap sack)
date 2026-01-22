@@ -1,0 +1,51 @@
+class Solution {
+    //----recursion
+    // public int coinChange(int[] coins, int amount) {  
+    //     // if(amount==0) return 0;
+    //     // if(amount<0) return -1;
+    //     // int mincount=Integer.MAX_VALUE;
+    //     // for(int coin:coins){
+    //     //     int res=coinChange(coins,amount-coin);
+    //     //     if(res>=0 && res<mincount){
+    //     //         mincount=res+1;
+    //     //     }
+    //     // }
+    //     // return (mincount==Integer.MAX_VALUE)?-1:mincount;
+    // }
+    //------memorization
+    // private int solve(int[] coins,int amount,int[] dp){
+    //    if(amount==0) return 0;
+    //     if(amount<0) return -1;
+    //     int mincount=Integer.MAX_VALUE;
+    //     if(dp[amount]!=-2) return dp[amount];
+    //     for(int coin:coins){
+    //         int res=solve(coins,amount-coin,dp);
+    //         if(res>=0 && res<mincount){
+    //             mincount=res+1;
+    //         }
+    //     }
+    //     return dp[amount]=(mincount==Integer.MAX_VALUE)?-1:mincount; 
+    // }
+    // public int coinChange(int[] coins, int amount) { 
+    //    int[] dp=new int[amount+1];
+    //    Arrays.fill(dp,-2);
+    //    return solve(coins,amount,dp);
+    // }
+    //----tabulation
+
+    public int coinChange(int[] coins,int amount){
+        int[] dp=new int[amount+1];
+        Arrays.fill(dp,amount+1);
+        dp[0]=0;
+        for(int i=1;i<=amount;i++){
+            for(int coin:coins){
+                if(i-coin>=0){
+                   dp[i]=Math.min(dp[i],1+dp[i-coin]);
+                }
+            }
+        }
+        return dp[amount]>amount?-1:dp[amount];
+         
+    }
+
+}
